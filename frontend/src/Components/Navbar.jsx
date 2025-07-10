@@ -30,12 +30,25 @@ const Navbar = () => {
 
 
     useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 10);
-        };
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    if (location.pathname !== '/') {
+        setIsScrolled(true);
+        return;
+    }
+
+    // Default to not scrolled on homepage
+    setIsScrolled(false);
+
+    const handleScroll = () => {
+        setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+        window.removeEventListener("scroll", handleScroll);
+    };
+    }, [location.pathname]); // Optional: include pathname if navbar should react to route changes
+
 
     return (
         
@@ -56,7 +69,7 @@ const Navbar = () => {
                         </a>
                     ))}
                     <button className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}>
-                        New Launch
+                        Dashboard
                     </button>
                 </div>
 
